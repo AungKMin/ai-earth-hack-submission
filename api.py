@@ -39,7 +39,7 @@ def gptPrompt(food):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a chef who is also an expert in sustainability and recycling. You are skilled in giving a recepie for a meal with sustainable and recycled ingredients. You always return the ingredients and recipe instructions in JSON with no additional description or context."}, 
+            {"role": "system", "content": "You are a chef who is also an expert in sustainability and recycling. You are skilled in giving a recipe for a meal with sustainable and recycled ingredients. You always return the ingredients and recipe instructions in JSON with no additional description or context."}, 
             {"role": "user", "content": f"{prompt} Please provide a recipe with instructions and an ingredients list, making sure that each ingredient is recycled or sustainable and that each instruction step is as sustainable as possible."}
         ],
         functions=[
