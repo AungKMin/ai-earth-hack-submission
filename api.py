@@ -41,7 +41,7 @@ def gptPrompt(food):
         model="gpt-3.5-turbo-1106",
         messages=[
             {"role": "system", "content": "You are chef who is also an expert in sustainability and recycling. You are skilled in giving a receipe for a meal with sustainable and recycled ingredients. You always return the ingredients and recipe instructions in JSON with no additonal description or context."}, 
-            {"role": "user", "content": f"{prompt} Please provide a recipe with instructions and an ingredients list, with an emphasis on zero-waste and sustainable products. Do not mention the quantity in ingredients"}
+            {"role": "user", "content": f"{prompt} Please provide a recipe with instructions and an ingredients list, with an emphasis on zero-waste and sustainable products. Do not label order numbers in instructions and ingredients."}
         ],
         functions=[
             {

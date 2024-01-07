@@ -7,7 +7,7 @@ import db as db
 import api as api
 
 # ---STREAMLIT SETTINGS---#
-page_title = "Create something delicious and sustainable"
+page_title = "Welcome to AI Chef! Let's create something delicious and sustainable"
 page_icon = ":evergreen_tree:"
 layout  = "centered"
 
@@ -61,31 +61,28 @@ if nav_menu == "Shopping list":
                         st.write("\n\n")
                         url = st.session_state["images"][i]
                         st.image(f"{url}",width=150)
-                        st.checkbox(f"{i + 1}\. {t}")
+                        st.checkbox(f"{t}")
                 elif i % 3 == 1:
                     with col2:
                         st.write("\n\n")
                         url = st.session_state["images"][i]
                         st.image(f"{url}",width=150)
-                        st.checkbox(f"{i + 1}. {t}")
+                        st.checkbox(f"{t}")
                 else:
                     with col3:
                         st.write("\n\n")
                         url = st.session_state["images"][i]
                         st.image(f"{url}",width=150)
-                        st.checkbox(f"{i + 1}. {t}")
+                        st.checkbox(f"{t}")
     else:
         for i, t in enumerate(st.session_state["item_list"]):
-            st.checkbox(f"{i + 1}\. {t}")
-            if st.button("delete", key=i):
-                del st.session_state["item_list"][i]
-                st.rerun()
+            st.checkbox(f"{t}")
 
 if nav_menu == "Instructions":
-    ordered_list_html = "<ol>" 
+    ordered_list_html = "<ul>" 
     for t in st.session_state["instructions"]:
         ordered_list_html += f"<li> {t}</li>"
-    ordered_list_html += "</ol>"
+    ordered_list_html += "</ul>"
 
     container_content = f"""
         <div style='margin-top: 20px; background-color: #282434; border-radius: 10px; padding: 20px;  '>
@@ -97,5 +94,3 @@ if nav_menu == "Instructions":
     # Clear previous content before displaying new content
     st.empty()
     st.markdown(container_content, unsafe_allow_html=True)
-
-    
