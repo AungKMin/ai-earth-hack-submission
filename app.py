@@ -5,6 +5,7 @@ from streamlit_option_menu import option_menu
 #---IMPORT PYTHON FILE IN SAME DIR---#
 import db as db
 import api as api
+import pandas as pd
 
 # ---STREAMLIT SETTINGS---#
 page_title = "Welcome to AI Chef! Let's create something delicious and sustainable"
@@ -34,6 +35,12 @@ nav_menu = option_menu(
 
 image = []
 
+def update_shopping_list(item, checked):
+    if checked and item not in st.session_state['selected_items']:
+        st.session_state['selected_items'].append(item)
+    elif not checked and item in st.session_state['selected_items']:
+        st.session_state['selected_items'].remove(item)
+
 #---INPUT FORM---#
 if "item_list" not in st.session_state:
     st.session_state["item_list"] = []
@@ -52,31 +59,40 @@ if st.button("Generate recipe"):
         st.session_state["images"].append(api.imageURL(item))
 
 
-col1, col2, col3 = st.columns([ 1, 1, 1])
 if nav_menu == "Shopping list":
+    col1, col2, col3 = st.columns([ 2, 2, 2])
+    if 'selected_items' not in st.session_state:
+        st.session_state['selected_items'] = []
     if st.checkbox("Show pictures"):
         for i, t in enumerate(st.session_state["item_list"]):
-                if i % 3 == 0:
-                    with col1:
+            columns = [col1, col2, col3]
+            for index, col in enumerate(columns):
+                if i % 3 == index:
+                    with col:
                         st.write("\n\n")
                         url = st.session_state["images"][i]
                         st.image(f"{url}",width=150)
-                        st.checkbox(f"{t}")
-                elif i % 3 == 1:
-                    with col2:
-                        st.write("\n\n")
-                        url = st.session_state["images"][i]
-                        st.image(f"{url}",width=150)
-                        st.checkbox(f"{t}")
-                else:
-                    with col3:
-                        st.write("\n\n")
-                        url = st.session_state["images"][i]
-                        st.image(f"{url}",width=150)
-                        st.checkbox(f"{t}")
+                        add_to_list = st.checkbox(f"{i + 1}. {t}")
+                        update_shopping_list(t, add_to_list)
+                        
     else:
         for i, t in enumerate(st.session_state["item_list"]):
-            st.checkbox(f"{t}")
+            add_to_list = st.checkbox(f"{i + 1}. {t}")
+            update_shopping_list(t, add_to_list)
+
+
+    if st.session_state["item_list"]:
+        st.write("## My Cart  🛒")
+        if not st.session_state['selected_items']:
+            st.write("Empty Cart")
+        else:
+            selected_items = st.session_state.get('selected_items', [])
+
+            df = pd.DataFrame({'Item': selected_items})
+            df.index=df.index+1 
+            st.table(df)
+        button_clicked = st.button('Go Shopping')
+
 
 if nav_menu == "Instructions":
     ordered_list_html = "<ul>" 
@@ -94,3 +110,5 @@ if nav_menu == "Instructions":
     # Clear previous content before displaying new content
     st.empty()
     st.markdown(container_content, unsafe_allow_html=True)
+
+
