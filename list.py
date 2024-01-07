@@ -43,7 +43,7 @@ if "instructions" not in st.session_state:
 
 item_enter = st.text_input("What do you want to cook?", " ")
 
-if st.button("Generate list"):
+if st.button("Generate recipe"):
     result = api.get_json(item_enter)
     st.session_state["item_list"] = result["ingredients"]
     st.session_state["instructions"] = result["instructions"]
