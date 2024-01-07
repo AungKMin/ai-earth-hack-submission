@@ -4,5 +4,5 @@
 
 ```bash
 pip install -r requirements.txt
-streamlit run ./list.py
+streamlit run ./app.py
 ```

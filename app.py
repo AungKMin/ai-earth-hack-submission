@@ -24,14 +24,11 @@ st.title(f"{page_title} {page_icon}")
 #                 """
 # st.markdown(hide_st_style, unsafe_allow_html=True)
 
-#---FUNCTIONS---#
-
-
 #---NAV BARS---#
 nav_menu = option_menu(
     menu_title = None,
     options = ["Shopping list", "Instructions"],
-    icons = ["list-task", "cup-straw"],
+    icons = ["bag-heart-fill", "list-task"],
     orientation = "horizontal"
 ) 
 
@@ -57,28 +54,32 @@ if st.button("Generate recipe"):
 
 col1, col2, col3 = st.columns([ 1, 1, 1])
 if nav_menu == "Shopping list":
-    for i, t in enumerate(st.session_state["item_list"]):
-        if i % 3 == 0:
-            with col1:
-                st.write("\n\n")
-                url = st.session_state["images"][i]
-                st.image(f"{url}",width =150)
-                st.checkbox(f"{i + 1}. {t}")
-
-
-        elif i % 3 == 1:
-            with col2:
-                st.write("\n\n")
-                url = st.session_state["images"][i]
-                st.image(f"{url}",width =150)
-                st.checkbox(f"{i + 1}. {t}")
-
-        else:
-            with col3:
-                st.write("\n\n")
-                url = st.session_state["images"][i]
-                st.image(f"{url}",width =150)
-                st.checkbox(f"{i + 1}. {t}")
+    if st.checkbox("Show pictures"):
+        for i, t in enumerate(st.session_state["item_list"]):
+                if i % 3 == 0:
+                    with col1:
+                        st.write("\n\n")
+                        url = st.session_state["images"][i]
+                        st.image(f"{url}",width=150)
+                        st.checkbox(f"{i + 1}\. {t}")
+                elif i % 3 == 1:
+                    with col2:
+                        st.write("\n\n")
+                        url = st.session_state["images"][i]
+                        st.image(f"{url}",width=150)
+                        st.checkbox(f"{i + 1}. {t}")
+                else:
+                    with col3:
+                        st.write("\n\n")
+                        url = st.session_state["images"][i]
+                        st.image(f"{url}",width=150)
+                        st.checkbox(f"{i + 1}. {t}")
+    else:
+        for i, t in enumerate(st.session_state["item_list"]):
+            st.checkbox(f"{i + 1}\. {t}")
+            if st.button("delete", key=i):
+                del st.session_state["item_list"][i]
+                st.rerun()
 
 if nav_menu == "Instructions":
     ordered_list_html = "<ol>" 
