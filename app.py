@@ -74,7 +74,6 @@ if nav_menu == "Shopping list":
                         st.image(f"{url}",width=150)
                         add_to_list = st.checkbox(f"{i + 1}. {t}")
                         update_shopping_list(t, add_to_list)
-                        
     else:
         for i, t in enumerate(st.session_state["item_list"]):
             add_to_list = st.checkbox(f"{i + 1}. {t}")
@@ -82,7 +81,7 @@ if nav_menu == "Shopping list":
 
 
     if st.session_state["item_list"]:
-        st.write("## My Cart  🛒")
+        st.write("## My Cart 🛒")
         if not st.session_state['selected_items']:
             st.write("Empty Cart")
         else:
