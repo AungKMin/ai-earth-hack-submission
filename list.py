@@ -35,11 +35,15 @@ nav_menu = option_menu(
     orientation = "horizontal"
 ) 
 
+image = []
+
 #---INPUT FORM---#
 if "item_list" not in st.session_state:
     st.session_state["item_list"] = []
 if "instructions" not in st.session_state:
     st.session_state["instructions"] = []
+if "images" not in st.session_state:
+    st.session_state["images"] = []
 
 item_enter = st.text_input("What do you want to cook?", " ")
 
@@ -47,17 +51,50 @@ if st.button("Generate recipe"):
     result = api.get_json(item_enter)
     st.session_state["item_list"] = result["ingredients"]
     st.session_state["instructions"] = result["instructions"]
+    for item in st.session_state["item_list"]:
+        st.session_state["images"].append(api.imageURL(item))
 
+
+col1, col2, col3 = st.columns([ 1, 1, 1])
 if nav_menu == "Shopping list":
     for i, t in enumerate(st.session_state["item_list"]):
-        st.checkbox(f"{i + 1}\. {t}")
-        if st.button("delete", key=i):
-            del st.session_state["item_list"][i]
-            st.rerun()
+        if i % 3 == 0:
+            with col1:
+                st.write("\n\n")
+                url = st.session_state["images"][i]
+                st.image(f"{url}",width =150)
+                st.checkbox(f"{i + 1}. {t}")
+
+
+        elif i % 3 == 1:
+            with col2:
+                st.write("\n\n")
+                url = st.session_state["images"][i]
+                st.image(f"{url}",width =150)
+                st.checkbox(f"{i + 1}. {t}")
+
+        else:
+            with col3:
+                st.write("\n\n")
+                url = st.session_state["images"][i]
+                st.image(f"{url}",width =150)
+                st.checkbox(f"{i + 1}. {t}")
 
 if nav_menu == "Instructions":
-    for i, t in enumerate(st.session_state["instructions"]):
-        st.checkbox(f"{i + 1}\. {t}")
-    
+    ordered_list_html = "<ol>" 
+    for t in st.session_state["instructions"]:
+        ordered_list_html += f"<li> {t}</li>"
+    ordered_list_html += "</ol>"
+
+    container_content = f"""
+        <div style='margin-top: 20px; background-color: #282434; border-radius: 10px; padding: 20px;  '>
+            <h3>Instructions: 📜</h3>
+            {ordered_list_html}
+        </div>
+    """
+
+    # Clear previous content before displaying new content
+    st.empty()
+    st.markdown(container_content, unsafe_allow_html=True)
 
     

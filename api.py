@@ -56,3 +56,18 @@ def gptPrompt(food):
     decoded_response = json.loads(response.choices[0].message.function_call.arguments.strip())
 
     return decoded_response
+
+
+def imageURL(food):
+
+    client = OpenAI(api_key=api_key)
+    response = client.images.generate(
+    model="dall-e-2",
+    prompt=food,
+    size="1024x1024",
+    quality="standard",
+    n=1,
+    )
+
+    image_url = response.data[0].url
+    return image_url
