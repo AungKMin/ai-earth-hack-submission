@@ -33,8 +33,6 @@ nav_menu = option_menu(
     orientation = "horizontal"
 ) 
 
-image = []
-
 def update_shopping_list(item, checked):
     if checked and item not in st.session_state['selected_items']:
         st.session_state['selected_items'].append(item)
